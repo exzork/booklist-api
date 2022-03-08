@@ -16,6 +16,7 @@ services:
         volumes:
             - /var/www/vendor
             - ./:/var/www:rw
+            - ./storage:/var/www/storage:rw
             - ./public:/var/www/html:rw
         environment:
             - VIRTUAL_HOST=booklist-api.exzork.me
