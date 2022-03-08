@@ -14,6 +14,7 @@ services:
         depends_on:
             - mysql
         volumes:
+            - /var/www/vendor
             - ./:/var/www:rw
             - ./public:/var/www/html:rw
         environment:
