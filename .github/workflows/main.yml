@@ -1,0 +1,38 @@
+name: Deployment - Booklist API
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name : Checkout
+        uses: actions/checkout@v2
+      - name : Deploy Docker Using SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ~/project/booklist/api/
+            docker exec exzork_booklist_api php artisan down
+            git stash
+            git pull --no-edit origin main
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            sudo chown -R muhammadekop_mep:muhammadekop_mep public
+            npm install
+            npm run prod
+            docker-compose build
+            docker-compose up -d
+            docker image prune -f
+            docker exec exzork_simpedarku_dev chown -R www-data:www-data storage
+            docker exec exzork_simpedarku_dev chown -R www-data:www-data html
+            docker exec exzork_simpedarku_dev ln -sf ../storage/app/public ./html/storage
+            docker exec exzork_simpedarku_dev php artisan migrate
+            docker exec exzork_simpedarku_dev php artisan up
