@@ -19,6 +19,7 @@ WORKDIR /var/www
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN chown -R www-data:www-data /var/www/
+RUN chown -R www-data:www-data /var/www/storage
 RUN composer install
 
 EXPOSE 443
