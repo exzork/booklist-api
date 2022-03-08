@@ -31,8 +31,7 @@ jobs:
             docker-compose build
             docker-compose up -d
             docker image prune -f
-            docker exec exzork_simpedarku_dev chown -R www-data:www-data storage
-            docker exec exzork_simpedarku_dev chown -R www-data:www-data html
-            docker exec exzork_simpedarku_dev ln -sf ../storage/app/public ./html/storage
-            docker exec exzork_simpedarku_dev php artisan migrate
-            docker exec exzork_simpedarku_dev php artisan up
+            sudo chown -R www-data:www-data storage
+            sudo chown -R www-data:www-data bootstrap
+            sudo chown -R www-data:www-data public
+            docker exec exzork_booklist_api php artisan up
