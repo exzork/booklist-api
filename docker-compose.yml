@@ -1,0 +1,25 @@
+version: "3"
+services:
+    exzork_simpedarku_dev:
+        container_name: exzork_booklist_api
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        restart: always
+        expose:
+            - 80
+            - 443
+        links:
+            - mysql
+        depends_on:
+            - mysql
+        volumes:
+            - ./:/var/www:rw
+            - ./public:/var/www/html:rw
+        environment:
+            - VIRTUAL_HOST=booklist-api.exzork.me
+            - LETSENCRYPT_HOST=booklist-api.exzork.me
+            - LETSENCRYPT_EMAIL=muhammadeko.if@gmail.com
+networks:
+    default :
+        name: nginx-proxy
